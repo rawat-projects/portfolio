@@ -1,38 +1,48 @@
-.App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+*,
+body{margin:0;padding:0; color:#fff; font-family: 'Montserrat', sans-serif;}
+img {pointer-events: none;user-select: none;}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+a,
+a:hover,
+a:active,
+a:focus{text-decoration:none; color:unset;}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+a.btn{border-radius: 100px;border: 1px solid #FFCF54;letter-spacing: 0.04em; text-transform: uppercase; font-size: 16px;  color: #FFFFFF; padding: 15px 35px; display: inline-block; margin-top: 25px;}
 
-.App-link {
-  color: #61dafb;
-}
+/* sidebar */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+.sidebar{background-color:#2F2F2F; height:100vh; max-width:100px; flex:0 0 100px; position:relative;}
+.sidebar .hamburger{display:flex; align-items: center; position: relative; -wekbit-transform:rotate(40deg); transform:rotate(40deg); justify-content: center; margin-top:50px;}
+.sidebar .hamburger span{background-color:#fff; width:5px; display:block; border-radius:5px;}
+.sidebar .hamburger span:not(:last-child){margin-right:7px;}
+.sidebar .hamburger span:nth-child(1){height:30px;}
+.sidebar .hamburger span:nth-child(2){height:50px;}
+.sidebar .hamburger span:nth-child(3){height:30px;}
+
+.sidebar .page_title{position: absolute;top: 50%; -webkit-transform: rotate(-90deg); transform-origin: top;}
+.sidebar .page_title h4{letter-spacing: 0.04em;font-size: 20px;
+line-height: 24px;font-weight: 500; text-transform: uppercase;}
+
+.sidebar .contact_info{position: absolute; bottom: 50px; transform: rotate(-90deg); transform-origin: bottom; margin-bottom: 50px;}
+.sidebar .contact_info p{width:max-content; font-size: 16px;letter-spacing: 0.04em;}
+
+.main{display:flex; flex-wrap:wrap;background: #1B1B1B;}
+.main .right_content{max-width:calc(100% - 100px); flex:0 0 calc(100% - 100px); height:100vh; position:relative;}
+.main .right_content .top_line{position:fixed;top: 20px; left: 50%; transform: translateX(-50%); max-width: 100%;}
+.main .right_content .net{position: fixed; bottom: 40px; left: 10%; opacity: 0.3;}
+.main .right_content .corner{position: fixed; bottom:0; right:0; opacity: 0.3;}
+
+.main .right_content .page{min-height:100vh;display: flex; align-items: center;}
+.main .right_content .page .content{position:relative; margin-left:50px;}
+
+/* home page */
+
+.main .right_content .home_page  h6{font-size: 15px; line-height: 22px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: normal; margin-bottom: 10px;}
+.main .right_content .home_page h1{font-weight: bold; font-size: 40px; line-height: 54px; letter-spacing: 0.04em;
+text-transform: uppercase;}
+.main .right_content .home_page h1 span{color:#FFCF54;}
+
+
+
