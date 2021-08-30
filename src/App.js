@@ -20,9 +20,18 @@ function App() {
       <div className="main">
         <Sidebar />
         <div className="right_content">
-          <img src="assets/images/top_line.svg" className="top_line" />
-          <img src="assets/images/net.svg" className="net" />
-          <img src="assets/images/corner.svg" className="corner" />
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/top_line.svg"}
+            className="top_line"
+          />
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/net.svg"}
+            className="net"
+          />
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/corner.svg"}
+            className="corner"
+          />
           <Home />
         </div>
       </div>
