@@ -1,0 +1,5 @@
+sandeep
+sandeep
+
+
+mongodb+srv://sandeep:<password>@cluster0.m9a0r.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
