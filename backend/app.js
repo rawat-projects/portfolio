@@ -32,4 +32,8 @@ app.use("/", (req, res, next) => {
   res.send("<h1>hello from backend</h1>");
 });
 
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("frontend/build"));
+}
+
 module.exports = app;
