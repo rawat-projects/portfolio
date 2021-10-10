@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
-import store from "./store.js";
+import store from "./store";
 import { Provider } from "react-redux";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
@@ -20,11 +20,11 @@ const options = {
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AlertProvider template={AlertTemplate} {...options}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </AlertProvider>
+      <Provider store={store}>
+        <AlertProvider template={AlertTemplate} {...options}>
+            <App />
+        </AlertProvider>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

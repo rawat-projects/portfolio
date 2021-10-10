@@ -6,4 +6,16 @@ export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 
+export const USER_REQUEST = "USER_REQUEST";
+export const USER_SUCCESS = "USER_SUCCESS";
+export const USER_FAIL = "USER_FAIL";
+
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAIL = "LOAD_USER_FAIL";
+
+export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
 export const CLEAR_USER = "CLEAR_USER";

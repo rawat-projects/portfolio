@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 // import css
 import style from "../user.module.css";
@@ -14,8 +13,6 @@ const Sidebar = () => {
       </div>
 
       <div className={style.page_title}>
-        <Link to="/login">login</Link>
-        <Link to="/signup">signup</Link>
         <h4>Home</h4>
       </div>
 

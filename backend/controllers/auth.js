@@ -1,12 +1,15 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
+var jwt = require("jsonwebtoken");
+const ErrorHandler = require("../utils/errorHandler");
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const os = require("os");
+const path = require("path");
 
 exports.login = async (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
-  console.log("username", username);
-  console.log("password", password);
 
   const oldUser = await User.findOne({ username: username });
   if (!oldUser) {
@@ -17,6 +20,7 @@ exports.login = async (req, res, next) => {
   }
 
   const isMatch = await bcrypt.compare(password, oldUser.password);
+
   if (!isMatch) {
     return res.send({
       message: "credentials not match",
@@ -24,10 +28,15 @@ exports.login = async (req, res, next) => {
     });
   }
 
+  const token = await oldUser.generateAuthToken();
+  await res.cookie("jwttoken", token, {
+    expires: new Date(Date.now() + 3600000),
+    httpOnly: true,
+  });
+
   req.session.isLoggedIn = true;
   req.session.user = oldUser;
   return req.session.save((err) => {
-    console.log(req.session);
     return res.send({
       message: "User login successfully",
       isAuthenticated: true,
@@ -42,8 +51,26 @@ exports.logout = (req, res, next) => {
   });
 };
 
+exports.islogin = catchAsyncErrors(async (req, res, next) => {
+  const token = req.cookies.jwttoken;
+  if (!token) {
+    return next(new ErrorHandler("Login first to access this resource.", 401));
+  }
+
+  const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
+
+  const rootUser = await User.find({ _id: verifyToken._id });
+  req.user = rootUser;
+
+  await res.send({
+    success: true,
+    user: rootUser,
+  });
+});
+
 exports.signup = async (req, res, next) => {
   try {
+    const hostname = os.hostname();
     const username = req.body.username;
     const password = req.body.password;
     const profileImage = req.file;
@@ -53,7 +80,8 @@ exports.signup = async (req, res, next) => {
         isAuthenticated: false,
       });
     } else {
-      const filepath = profileImage.path;
+      console.log("profile image", profileImage);
+      const filename = process.env.BACKEND_URL + "/" + profileImage.filename;
       const oldUser = await User.findOne({
         username: username,
       });
@@ -69,7 +97,7 @@ exports.signup = async (req, res, next) => {
         await User.create({
           username: username,
           password: hashedPassword,
-          profileImage: filepath,
+          profileImage: filename,
         });
 
         await res.send({

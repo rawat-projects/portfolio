@@ -5,10 +5,17 @@ import style from "../../user.module.css";
 const Home = () => {
   return (
     <div className={`${style.home_page} ${style.page}`}>
+      <div className={`${style.col} ${style.coding}`}>
+        <img src={process.env.PUBLIC_URL + '/assets/images/coding.jpg'} />
+      </div>
+      <div className={`${style.col} ${style.designing}`}>
+        <img src={process.env.PUBLIC_URL + '/assets/images/designing.jpg'} />
+      </div>
       <div className={style.content}>
         <h6>Hello, I AM Sandeep rawat</h6>
         <h1>
-          website <span>designer</span> & <br /> frontend <span>developer</span>
+          Frontend <span>Developer
+          </span> & <br /> Website <span>Designer</span>
         </h1>
         <Button title="About Me" />
       </div>

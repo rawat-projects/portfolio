@@ -7,6 +7,10 @@ const Sidebar = () => {
     <div className={style.sidebar}>
       <ul>
         <li>
+          <Link to="/admin/about">About</Link>
+        </li>
+
+        <li>
           <Link to="/admin/contact">Contact</Link>
         </li>
       </ul>

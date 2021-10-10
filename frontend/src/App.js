@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Link, Switch, Redirect, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
 
 // user
@@ -8,6 +9,9 @@ import Sidebar from "./components/Sidebar";
 import Home from "./pages/User/Home";
 import Login from "./pages/User/Login";
 import Signup from "./pages/User/Signup";
+import About from "./pages/User/About";
+import Projects from "./pages/User/Projects";
+import Menus from "./components/Menus";
 import style from "./user.module.css";
 
 // admin
@@ -15,52 +19,74 @@ import Admin from "./layouts/Admin";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminSidebar from "./components/admin/Sidebar";
 import Contact from "./pages/admin/Contact";
+import AdminAbout from "./pages/admin/About";
 import adminStyle from "./admin.module.css";
+
+import store from "./store";
+import { loadUser } from "./actions/userActions";
+import ProtectedRoute from "./route/ProtectedRoute";
 
 function App(props) {
   const [isButtonActive, setIsButtonActive] = useState(false);
   let location = useLocation();
+  const dispatch = useDispatch();
   const alert = useAlert();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
 
   const buttonToggle = () => {
     setIsButtonActive(!isButtonActive);
   };
 
-  return (
-    <>
-      {!location.pathname.includes("admin") ? (
-        <div className={style.main}>
-          <Sidebar />
-          <div className={style.right_content}>
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/top_line.svg"}
-              className={style.top_line}
-            />
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/net.svg"}
-              className={style.net}
-            />
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/corner.svg"}
-              className={style.corner}
-            />
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/login" exact component={Login} />
-              <Route path="/signup" exact component={Signup} />
-              <Route
-                path="*"
-                component={() => {
-                  return <h1 className="">Page not found</h1>;
-                }}
-              />
-            </Switch>
-          </div>
-        </div>
-      ) : (
+  if (location.pathname.includes("admin/contact")) {
+    return (
+      <>
         <div className={adminStyle.admin_main}>
           <AdminSidebar />
           <div className="admin_contents">
+            <ProtectedRoute path="/admin/contact" component={Contact} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (location.pathname.includes("admin/about")) {
+    return (
+      <>
+        <div className={adminStyle.admin_main}>
+          <AdminSidebar />
+          <div className="admin_contents">
+            <ProtectedRoute path="/admin/about" component={AdminAbout} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (location.pathname.includes("admin/dashboard")) {
+    return (
+      <>
+        <div className={adminStyle.admin_main}>
+          <AdminSidebar />
+          <div className="admin_contents">
+            <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (location.pathname.includes("admin")) {
+    return (
+      <>
+        <Redirect to="/admin/dashboard" />
+        {/* <div className={adminStyle.admin_main}>
+          <AdminSidebar />
+          <div className="admin_contents">
+          
             <Switch>
               <Route
                 path="/admin"
@@ -71,6 +97,7 @@ function App(props) {
               />
               <Route path="/admin/dashboard" exact component={Dashboard} />
               <Route path="/admin/contact" exact component={Contact} />
+              <Route path="/adminLogin" exact component={Login} />
               <Route
                 path="*"
                 component={() => {
@@ -79,8 +106,44 @@ function App(props) {
               />
             </Switch>
           </div>
+        </div> */}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className={style.main}>
+        <Sidebar />
+        <Menus />
+        <div className={style.right_content}>
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/top_line.svg"}
+            className={style.top_line}
+          />
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/net.svg"}
+            className={style.net}
+          />
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/corner.svg"}
+            className={style.corner}
+          />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/signup" exact component={Signup} />
+            <Route path="/about" exact component={About} />
+            <Route path="/projects" exact component={Projects} />
+            <Route
+              path="*"
+              component={() => {
+                return <h1 className="">Page not found</h1>;
+              }}
+            />
+          </Switch>
         </div>
-      )}
+      </div>
     </>
   );
 }

@@ -11,7 +11,7 @@ const Login = ({ history }) => {
   });
   const dispatch = useDispatch();
   const alert = useAlert();
-  const { loading, user } = useSelector((state) => state.auth);
+  const { loading, user, isAuthenticated } = useSelector((state) => state.auth);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -38,13 +38,19 @@ const Login = ({ history }) => {
   };
 
   useEffect(() => {
+    if(isAuthenticated){
+      history.push('/')
+    }
+  }, [dispatch, alert, isAuthenticated, history])
+
+  useEffect(() => {
     if (user && user.data && user.data.isAuthenticated === true) {
       alert.success(user.data.message);
       history.push("/");
     } else if (user && user.data && user.data.isAuthenticated === false) {
       alert.error(user.data.message);
     }
-  }, [dispatch, submitHandler]);
+  }, [dispatch, submitHandler,isAuthenticated,history]);
 
   return (
     <form onSubmit={submitHandler}>

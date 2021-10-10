@@ -4,11 +4,11 @@ const Contact = () => {
   return (
     <div>
       <form autocomplete="false">
-        <div class="form-group">
+        <div className="form-group">
           <label>Phone Number</label>
-          <input type="email" class="form-control" />
+          <input type="email" className="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>
