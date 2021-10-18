@@ -69,6 +69,7 @@ exports.islogin = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.signup = async (req, res, next) => {
+  console.log("signupbody", req.body);
   try {
     const hostname = os.hostname();
     const username = req.body.username;
@@ -110,3 +111,13 @@ exports.signup = async (req, res, next) => {
     res.send(err);
   }
 };
+
+exports.loadUser = catchAsyncErrors(async (req, res, next) => {
+  const data = await User.findOne({
+    _id: "6143874220fe394202c4906d",
+  });
+
+  res.send({
+    user: data,
+  });
+});

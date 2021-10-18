@@ -1,33 +1,11 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { getUser, clearUser } from "../../actions/userActions";
-import { useAlert } from "react-alert";
+import React from "react";
+import { useSelector } from "react-redux";
 
 // import css
 import cssModule from "../../user.module.css";
 
 const About = () => {
-  const alert = useAlert();
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const { user, message, isAuthenticated } = useSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   dispatch(getUser(history));
-
-  //   console.log("message", message);
-
-  //   // if (isAuthenticated === true && message) {
-  //   //   alert.success(message);
-  //   // } else if (isAuthenticated === false) {
-  //   //   alert.error(message);
-  //   // }
-  //   return () => {
-  //     dispatch(clearUser());
-  //   };
-  // }, [dispatch, isAuthenticated]);
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className={cssModule.about_page}>
@@ -35,26 +13,24 @@ const About = () => {
       <div className={`${cssModule.content_section} ${cssModule["mx_-25"]}`}>
         <div className={`${cssModule.thumbnail} ${cssModule["px_25"]}`}>
           <figure>
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/default_avtar.jpg"}
-            />
+            <img src={user.profileImage} />
           </figure>
         </div>
         <div className={`${cssModule.content} ${cssModule["px_25"]}`}>
-          <h5 className={`${cssModule.name}`}>Sandeep Rawat</h5>
-          <p className={`${cssModule.post}`}>Frontend Developer & Designer</p>
+          <h5 className={`${cssModule.name}`}>{user.name}</h5>
+          <p className={`${cssModule.post}`}>{user.subHeading}</p>
 
-          <p>Hello! I'm Sandeep Rawat</p>
+          <p>{user.aboutUser}</p>
 
           <div className={cssModule.btns}>
             <a
-              href="javascript:void(0)"
+              href={`tel:${user.phone}`}
               className={`${cssModule.button} ${cssModule["btn_border"]}`}
             >
               Call
             </a>
             <a
-              href="javascript:void(0)"
+              href={`mailto:${user.email}`}
               className={`${cssModule.button} ${cssModule["btn_border"]}`}
             >
               Email

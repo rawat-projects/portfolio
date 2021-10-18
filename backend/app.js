@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/auth");
+const projectRoutes = require("./routes/project");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -34,6 +35,7 @@ app.use(
   })
 );
 app.use(userRoutes);
+app.use(projectRoutes);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("frontend/build"));

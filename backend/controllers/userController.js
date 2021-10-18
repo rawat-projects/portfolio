@@ -33,16 +33,15 @@ exports.postAbout = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsyncErrors(async (req, res, next) => {
-  const newUserData = {
-    phone: req.body.phone,
+  const data = {
+    ...req.body,
+    profileImage: process.env.BACKEND_URL + "/" + req.file.filename,
   };
-  console.log("reqbody", "testing");
-
-  // await User.findByIdAndUpdate(req.userId, req.body, {
-  //   new: true,
-  //   runValidators: true,
-  //   useFindAndModify: false,
-  // });
+  await User.findByIdAndUpdate(req.user[0]._id, data, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
 
   res.status(201).send({
     success: true,

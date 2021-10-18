@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const userControllers = require("../controllers/userController");
 const authController = require("../controllers/auth");
+const projectController = require("../controllers/projects");
 const authMiddleware = require("../middleware/auth");
 
 const storage = multer.diskStorage({
@@ -38,12 +39,19 @@ router.post(
 );
 router.post("/admin/logout", authController.logout);
 router.get("/islogin", authController.islogin);
+router.get("/loadUser", authController.loadUser);
 router.get("/about", userControllers.getAbout); // authMiddleware,
 router.post("/admin/about", userControllers.postAbout); // authMiddleware,
 router.put(
   "/admin/about",
-  // authMiddleware.isAuthenticatedUser,
+  upload.single("profileImage"),
+  authMiddleware.isAuthenticatedUser,
   userControllers.updateUser
 ); // authMiddleware,
+router.post(
+  "/admin/projects/new",
+  upload.single("projectImage"),
+  projectController.newProject
+);
 
 module.exports = router;

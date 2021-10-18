@@ -53,7 +53,8 @@ export const loadUser = () => async (dispatch) => {
       type: actions.LOAD_USER_REQUEST,
     });
 
-    const { data } = await axios.get("/islogin");
+    // const { data } = await axios.get("/islogin");
+    const { data } = await axios.get("/loadUser");
 
     dispatch({
       type: actions.LOAD_USER_SUCCESS,
@@ -109,8 +110,7 @@ export const updateUserData = (data) => async (dispatch) => {
       },
     };
 
-    const data = await axios.put("/admin/about", data, config);
-    console.log("resultdata", data);
+    const result = await axios.put("/admin/about", data);
 
     dispatch({
       type: actions.UPDATE_USER_SUCCESS,

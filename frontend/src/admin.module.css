@@ -1,2 +1,3 @@
 .admin_main{background-color:#e4e4e4; min-height:100vh; display:flex; flex-wrap:wrap;}
 .admin_main .sidebar{background-color: #1a141f; max-width: 200px; flex: 0 0 200PX; color:#fff;}
+.admin_main .admin_contents{max-width: calc(100% - 200px); flex: 0 0 calc(100% - 200px); padding:10px;}

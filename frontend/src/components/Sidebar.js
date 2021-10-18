@@ -1,12 +1,17 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 // import css
 import style from "../user.module.css";
 
-const Sidebar = () => {
+const Sidebar = ({ menus, ismenushow }) => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className={style.sidebar}>
-      <div className={style.hamburger}>
+      <div
+        className={`${style.hamburger} ${ismenushow ? "active" : ""}`}
+        onClick={menus}
+      >
         <span></span>
         <span></span>
         <span></span>
@@ -17,7 +22,7 @@ const Sidebar = () => {
       </div>
 
       <div className={style.contact_info}>
-        <p className={style.mobile_no}>+91-9811719984</p>
+        <p className={style.mobile_no}>{user.phone}</p>
       </div>
     </div>
   );

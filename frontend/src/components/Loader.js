@@ -2,7 +2,14 @@ import React from "react";
 import style from "../user.module.css";
 
 const Loader = () => {
-  return <div className={style.loader}>Loading...</div>;
+  return (
+    <>
+      <div className={style.main_loader}>
+        <div className={style.loader}></div>
+        <h1>Please wait...</h1>
+      </div>
+    </>
+  );
 };
 
 export default Loader;

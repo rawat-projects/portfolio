@@ -5,26 +5,62 @@ import { useDispatch, useSelector } from "react-redux";
 const About = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const [profilePreview, setProfilePreview] = useState(
-    "/assets/images/default_avtar.jpg"
-  );
-
-  const oldData = user && user[0];
-
   const [aboutData, setAboutData] = useState({
-    profileImage: oldData && oldData.profileImage,
-    name: oldData && oldData.name,
-    subHeading: oldData && oldData.subHeading,
-    email: oldData && oldData.email,
-    number: oldData && oldData.phone,
-    about: oldData && oldData.aboutUser,
+    profilePreview: "/assets/images/default_avtar.jpg",
+    profileImage: "",
+    name: "",
+    subHeading: "",
+    email: "",
+    number: "",
+    about: "",
   });
   const [editMode, setEditMode] = useState(false);
 
-  const { profileImage, name, subHeading, email, number, about } = aboutData;
+  useEffect(() => {
+    if (user) {
+      const oldData = user[0];
+
+      setAboutData({
+        ...aboutData,
+        profilePreview: oldData.profileImage,
+        name: oldData.name,
+        subHeading: oldData.subHeading,
+        email: oldData.email,
+        number: oldData.phone,
+        about: oldData.aboutUser,
+      });
+    }
+  }, []);
+
+  const {
+    profilePreview,
+    profileImage,
+    name,
+    subHeading,
+    email,
+    number,
+    about,
+  } = aboutData;
 
   const changeHandler = (e) => {
     if (e.target.name === "avatar") {
+      // setAboutData({
+      //   ...aboutData,
+      //   profileImage: e.target.files[0],
+      // });
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(e.target.files[0]);
+
+      reader.onload = function () {
+        if (reader.readyState === 2) {
+          setAboutData({
+            ...aboutData,
+            profilePreview: reader.result,
+          });
+        }
+      };
     } else {
       setAboutData({
         ...aboutData,
@@ -33,27 +69,10 @@ const About = () => {
     }
   };
 
-  const profileChangeHandler = (e) => {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      if (reader.readyState === 2) {
-        setProfilePreview(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
   const submitHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set("username", "sandeep@gmail.com");
-    formData.set(
-      "password",
-      "$2a$12$lDj2Di.jiByqNrgnKXcyWOE1tOLb5K979u8/z2rAJ5pI1Wgld40Zm"
-    );
     formData.set("phone", number);
     formData.set("profileImage", profileImage);
     formData.set("name", name);
@@ -61,14 +80,8 @@ const About = () => {
     formData.set("email", email);
     formData.set("aboutUser", about);
 
-    dispatch(updateUserData({ name: "Sandeep karmar" }));
+    dispatch(updateUserData(formData));
   };
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     dispatch(loadUser());
-  //   }
-  // }, [dispatch]);
 
   return (
     <>
@@ -77,7 +90,7 @@ const About = () => {
           <div className="form-group">
             <label>Image Review</label>
             <img
-              src={oldData.profileImage ? oldData.profileImage : profilePreview}
+              src={profilePreview}
               style={{ height: "200px", width: "200px", display: "block" }}
             />
           </div>
@@ -85,8 +98,15 @@ const About = () => {
             <label>Choose Image</label>
             <input
               type="file"
+              name="avatar"
               className="form-control"
-              onChange={profileChangeHandler}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setAboutData({
+                  ...aboutData,
+                  profileImage: file,
+                });
+              }}
               readOnly={!editMode}
             />
           </div>
@@ -97,7 +117,7 @@ const About = () => {
               id="name"
               name="name"
               className="form-control"
-              value={!editMode ? oldData.name : aboutData.name}
+              value={name}
               onChange={changeHandler}
               readOnly={!editMode}
             />
@@ -109,7 +129,7 @@ const About = () => {
               id="subHeading"
               name="subHeading"
               className="form-control"
-              value={!editMode ? oldData.subHeading : aboutData.subHeading}
+              value={subHeading}
               onChange={changeHandler}
               readOnly={!editMode}
             />
@@ -121,7 +141,7 @@ const About = () => {
               id="email"
               name="email"
               onChange={changeHandler}
-              value={!editMode ? oldData.email : aboutData.email}
+              value={email}
               className="form-control"
               readOnly={!editMode}
             />
@@ -133,7 +153,7 @@ const About = () => {
               id="number"
               name="number"
               onChange={changeHandler}
-              value={!editMode ? oldData.phone : aboutData.phone}
+              value={number}
               className="form-control"
               readOnly={!editMode}
             />
@@ -145,7 +165,7 @@ const About = () => {
               name="about"
               id="about"
               onChange={changeHandler}
-              value={!editMode ? oldData.aboutUser : aboutData.aboutUser}
+              value={about}
               readOnly={!editMode}
             ></textarea>
           </div>

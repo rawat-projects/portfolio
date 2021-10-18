@@ -11,6 +11,10 @@ const Sidebar = () => {
         </li>
 
         <li>
+          <Link to="/admin/projects">Projects</Link>
+        </li>
+
+        <li>
           <Link to="/admin/contact">Contact</Link>
         </li>
       </ul>

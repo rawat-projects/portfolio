@@ -1,10 +1,17 @@
-import React from "react";
-import Button from "../../UI/Button";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styles from "../../user.module.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { getProjects } from "../../actions/projectActions";
 
 const Projects = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProjects());
+  }, [dispatch]);
+
   return (
     <div className={`${styles.projects_page} ${styles.page}`}>
       <div className={`${styles.projects_row} ${styles["mx_-25"]}`}>

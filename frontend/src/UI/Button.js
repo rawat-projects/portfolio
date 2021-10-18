@@ -1,15 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import style from "../user.module.css";
 
 const Button = (props) => {
   return (
-    <a
-      href="javascript:void();"
-      className={`${style.btn} ${props.classname}`}
-      onClick={props.click}
-    >
+    <Link to="/about" className={`${style.btn} ${props.classname}`}>
       {props.title}
-    </a>
+    </Link>
   );
 };
 
