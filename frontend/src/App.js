@@ -50,116 +50,27 @@ function App(props) {
     setIsMenusShow(false);
   };
 
-  if (location.pathname.includes("admin/contact")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute path="/admin/contact" component={Contact} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (location.pathname.includes("admin/about")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute path="/admin/about" component={AdminAbout} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (location.pathname.includes("admin/projects/edit")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute
-              path="/admin/projects/edit/:projectId"
-              component={EditProject}
-            />
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (location.pathname.includes("admin/projects/add")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute path="/admin/projects/add" component={AddProject} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (location.pathname.includes("admin/projects")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute path="/admin/projects" component={UserProjects} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (location.pathname.includes("admin/dashboard")) {
-    return (
-      <>
-        <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className={adminStyle.admin_contents}>
-            <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
   if (location.pathname.includes("admin")) {
     return (
-      <>
-        <Redirect to="/admin/dashboard" />
-        {/* <div className={adminStyle.admin_main}>
-          <AdminSidebar />
-          <div className="admin_contents">
-          
-            <Switch>
-              <Route
-                path="/admin"
-                exact
-                render={() => {
-                  return <Redirect to="/admin/dashboard" />;
-                }}
-              />
-              <Route path="/admin/dashboard" exact component={Dashboard} />
-              <Route path="/admin/contact" exact component={Contact} />
-              <Route path="/adminLogin" exact component={Login} />
-              <Route
-                path="*"
-                component={() => {
-                  return <h1 className="">Page not found</h1>;
-                }}
-              />
-            </Switch>
-          </div>
-        </div> */}
-      </>
+      <div className={adminStyle.admin_main}>
+        <AdminSidebar />
+        <div className={adminStyle.admin_contents}>
+          <ProtectedRoute path="/admin/contact" component={Contact} />
+          <ProtectedRoute path="/admin/about" exact component={AdminAbout} />
+          <Route path="/admin/projects/edit/:id" component={EditProject} />
+          <ProtectedRoute
+            path="/admin/projects"
+            exact
+            component={UserProjects}
+          />
+          <ProtectedRoute path="/admin/projects/add" component={AddProject} />
+          <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
+          <Route
+            path="/admin/*"
+            render={() => <Redirect to="/admin/dashboard" />}
+          />
+        </div>
+      </div>
     );
   }
 

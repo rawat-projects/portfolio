@@ -1,14 +1,21 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { projectActions } from "../../actions/projectActions";
+import { Select } from "antd";
+import { useAlert } from "react-alert";
+import "antd/dist/antd.css";
+const { Option } = Select;
 
-const AddProject = () => {
+const AddProject = ({ history }) => {
+  const alert = useAlert();
   const dispatch = useDispatch();
+  const { message } = useSelector((state) => state.projects);
   const [project, setProject] = useState({
     imagePreview: "/assets/images/default_avtar.jpg",
     projectImage: "",
     name: "",
     link: "",
+    languages: "",
   });
 
   const changeHandler = (e) => {
@@ -37,6 +44,13 @@ const AddProject = () => {
     }
   };
 
+  const languageChangeHandler = (e) => {
+    setProject({
+      ...project,
+      languages: e,
+    });
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -44,9 +58,17 @@ const AddProject = () => {
     formData.set("projectImage", project.projectImage);
     formData.set("name", project.name);
     formData.set("link", project.link);
+    formData.set("languages", project.languages);
 
     dispatch(projectActions(formData));
   };
+
+  useEffect(() => {
+    if (message !== "") {
+      alert.success(message);
+      history.push("/admin/projects");
+    }
+  }, [dispatch, submitHandler, alert]);
 
   return (
     <div>
@@ -91,6 +113,33 @@ const AddProject = () => {
             onChange={changeHandler}
             name="link"
           />
+        </div>
+        <div className="form-group">
+          <label>Languages</label>
+          <Select
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Select Languages"
+            onChange={languageChangeHandler}
+            name="languages"
+            optionLabelProp="label"
+          >
+            <Option value="HTML" label="HTML">
+              <div className="demo-option-label-item">HTML</div>
+            </Option>
+            <Option value="CSS" label="CSS">
+              <div className="demo-option-label-item">CSS</div>
+            </Option>
+            <Option value="Javascript" label="Javascript">
+              <div className="demo-option-label-item">Javascript</div>
+            </Option>
+            <Option value="React" label="React">
+              <div className="demo-option-label-item">React</div>
+            </Option>
+            <Option value="MERN" label="MERN">
+              <div className="demo-option-label-item">MERN</div>
+            </Option>
+          </Select>
         </div>
         <input type="submit" value="Add" />
       </form>

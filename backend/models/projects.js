@@ -13,6 +13,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter project link"],
   },
+  languages: {
+    type: Array,
+    required: [true, "Please select languages"],
+  },
 });
 
 module.exports = mongoose.model("Projects", projectSchema);

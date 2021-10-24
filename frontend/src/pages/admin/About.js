@@ -18,7 +18,7 @@ const About = () => {
 
   useEffect(() => {
     if (user) {
-      const oldData = user[0];
+      const oldData = user;
 
       setAboutData({
         ...aboutData,
@@ -85,7 +85,7 @@ const About = () => {
 
   return (
     <>
-      {user && user[0] && (
+      {user && (
         <form onSubmit={submitHandler}>
           <div className="form-group">
             <label>Image Review</label>
