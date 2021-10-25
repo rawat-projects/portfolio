@@ -1,8 +1,13 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { isLogin } from "../actions/userActions";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(isLogin());
+  }, []);
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   return (

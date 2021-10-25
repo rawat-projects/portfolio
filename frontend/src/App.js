@@ -66,7 +66,7 @@ function App(props) {
           <ProtectedRoute path="/admin/projects/add" component={AddProject} />
           <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
           <Route
-            path="/admin/*"
+            path="/admin/"
             render={() => <Redirect to="/admin/dashboard" />}
           />
         </div>

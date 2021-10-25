@@ -59,6 +59,7 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: actions.LOAD_USER_SUCCESS,
       payload: data.user,
+      isAuthenticated: data.isAuthenticated,
     });
   } catch (error) {
     dispatch({
@@ -121,6 +122,29 @@ export const updateUserData = (data) => async (dispatch) => {
       type: actions.UPDATE_USER_FAIL,
       object: data,
       // payload: err.response.data.message,
+    });
+  }
+};
+
+// is login
+
+export const isLogin = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: actions.IS_LOGIN_REQUEST,
+    });
+
+    const { data } = await axios.get("/islogin");
+
+    dispatch({
+      type: actions.IS_LOGIN_SUCCESS,
+      payload: data.user,
+      isLogin: true,
+    });
+  } catch (error) {
+    dispatch({
+      type: actions.IS_LOGIN_FAIL,
+      message: error.response.data.errMessage,
     });
   }
 };
