@@ -9,11 +9,14 @@ const authReducer = (state = initialState, action) => {
     case actions.REGISTER_REQUEST:
     case actions.LOGIN_REQUEST:
     case actions.LOAD_USER_REQUEST:
+    case actions.IS_LOGIN_REQUEST:
       return {
         ...state,
         loading: true,
         user: null,
         isAuthenticated: false,
+        message: "",
+        isUserLogin: false,
       };
 
     case actions.REGISTER_SUCCESS:
@@ -22,6 +25,15 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload,
         isAuthenticated: false,
+        message: "",
+        isUserLogin: false,
+      };
+
+    case actions.IS_LOGIN_SUCCESS:
+      return {
+        ...state,
+        isUserLogin: true,
+        message: "",
       };
 
     case actions.LOGIN_SUCCESS:
@@ -30,6 +42,8 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload,
         isAuthenticated: true,
+        message: "",
+        isUserLogin: true,
       };
 
     case actions.LOAD_USER_SUCCESS:
@@ -38,6 +52,14 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload,
         isAuthenticated: true,
+        isUserLogin: action.isAuthenticated,
+      };
+
+    case actions.IS_LOGIN_FAIL:
+      return {
+        ...state,
+        message: action.message,
+        isUserLogin: false,
       };
 
     case actions.REGISTER_FAIL:
@@ -56,6 +78,8 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: null,
         isAuthenticated: false,
+        message: "",
+        isUserLogin: false,
       };
     default:
       return state;

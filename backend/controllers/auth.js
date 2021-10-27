@@ -119,6 +119,6 @@ exports.loadUser = catchAsyncErrors(async (req, res, next) => {
 
   res.send({
     user: data,
-    isAuthenticated: req.session.isLoggedIn,
+    isAuthenticated1: req.session.isLoggedIn,
   });
 });

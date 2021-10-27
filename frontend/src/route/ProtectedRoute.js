@@ -1,14 +1,9 @@
 import React, { Fragment, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { isLogin } from "../actions/userActions";
+import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(isLogin());
-  }, []);
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isUserLogin, loading } = useSelector((state) => state.auth);
 
   return (
     <Fragment>
@@ -16,7 +11,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         <Route
           {...rest}
           render={(props) => {
-            if (isAuthenticated === false) {
+            if (isUserLogin === false) {
               return <Redirect to="/login" />;
             }
 

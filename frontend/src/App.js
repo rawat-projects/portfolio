@@ -27,12 +27,12 @@ import adminStyle from "./admin.module.css";
 
 import store from "./store";
 import Loader from "./components/Loader";
-import { loadUser } from "./actions/userActions";
+import { loadUser, isLogin } from "./actions/userActions";
 import ProtectedRoute from "./route/ProtectedRoute";
 
 function App(props) {
   const [isMenusShow, setIsMenusShow] = useState(false);
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, message } = useSelector((state) => state.auth);
 
   let location = useLocation();
   const dispatch = useDispatch();
@@ -40,7 +40,10 @@ function App(props) {
 
   useEffect(() => {
     dispatch(loadUser());
-  }, [dispatch]);
+    if (location.pathname.includes("admin")) {
+      dispatch(isLogin());
+    }
+  }, []);
 
   const menusOpen = () => {
     setIsMenusShow(true);
@@ -52,25 +55,43 @@ function App(props) {
 
   if (location.pathname.includes("admin")) {
     return (
-      <div className={adminStyle.admin_main}>
-        <AdminSidebar />
-        <div className={adminStyle.admin_contents}>
-          <ProtectedRoute path="/admin/contact" component={Contact} />
-          <ProtectedRoute path="/admin/about" exact component={AdminAbout} />
-          <Route path="/admin/projects/edit/:id" component={EditProject} />
-          <ProtectedRoute
-            path="/admin/projects"
-            exact
-            component={UserProjects}
-          />
-          <ProtectedRoute path="/admin/projects/add" component={AddProject} />
-          <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
-          <Route
-            path="/admin/"
-            render={() => <Redirect to="/admin/dashboard" />}
-          />
-        </div>
-      </div>
+      <>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className={adminStyle.admin_main}>
+              <AdminSidebar />
+              <div className={adminStyle.admin_contents}>
+                <ProtectedRoute path="/admin/contact" component={Contact} />
+                <ProtectedRoute
+                  path="/admin/about"
+                  exact
+                  component={AdminAbout}
+                />
+                <ProtectedRoute
+                  path="/admin/projects/edit/:id"
+                  component={EditProject}
+                />
+                <ProtectedRoute
+                  path="/admin/projects"
+                  exact
+                  component={UserProjects}
+                />
+                <ProtectedRoute
+                  path="/admin/projects/add"
+                  component={AddProject}
+                />
+                <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
+                <ProtectedRoute
+                  path="/admin/"
+                  render={() => <Redirect to="/admin/dashboard" />}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </>
     );
   }
 
