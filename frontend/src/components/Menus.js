@@ -94,30 +94,6 @@ const Menus = ({ menuShow, menuClose }) => {
         <li>
           <div className={customStyle.item}>
             <NavLink
-              to="/contact"
-              activeStyle={{ borderColor: "#FFCF54", color: "#FFCF54" }}
-              onClick={menuClose}
-            >
-              <span
-                className={`${customStyle.icon} ${customStyle.home_icon}`}
-                style={
-                  pathname === "/contact"
-                    ? {
-                        backgroundImage: `url('${process.env.PUBLIC_URL}/assets/images/contact_active.svg')`,
-                      }
-                    : {
-                        backgroundImage: `url('${process.env.PUBLIC_URL}/assets/images/contact.svg')`,
-                      }
-                }
-              ></span>
-              Contact
-            </NavLink>
-          </div>
-        </li>
-
-        <li>
-          <div className={customStyle.item}>
-            <NavLink
               to="/resume"
               activeStyle={{ borderColor: "#FFCF54", color: "#FFCF54" }}
               onClick={menuClose}

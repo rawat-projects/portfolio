@@ -28,19 +28,18 @@ export const login = (userData) => async (dispatch) => {
       type: actions.LOGIN_REQUEST,
     });
 
-    const data = await axios.post("/admin/login", userData);
+    const { data } = await axios.post("/admin/login", userData);
 
     dispatch({
       type: actions.LOGIN_SUCCESS,
-      payload: data,
+      message: data.message,
+      payload: data.data,
     });
   } catch (err) {
     dispatch({
       type: actions.LOGIN_FAIL,
-      payload: {
-        message: err.message,
-        isAuthenticated: false,
-      },
+      payload: {},
+      message: err.response.data.message,
     });
   }
 };
@@ -59,12 +58,13 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: actions.LOAD_USER_SUCCESS,
       payload: data.user,
-      isAuthenticated: data.isAuthenticated,
+      isAuthenticated: data.isAuthenticated1,
+      isUserLogin: data.isAuthenticated1,
     });
   } catch (error) {
     dispatch({
       type: actions.LOAD_USER_FAIL,
-      message: error.response.data.errMessage,
+      message: error,
     });
   }
 };

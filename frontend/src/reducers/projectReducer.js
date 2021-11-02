@@ -30,6 +30,7 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         message: action.message,
+        loading: false,
       };
 
     case actions.GET_PROJECT_SUCCESS:
@@ -38,6 +39,7 @@ const projectReducer = (state = initialState, action) => {
         data: action.payload.data,
         singleData: null,
         message: "",
+        loading: false,
       };
 
     case actions.GET_SINGLE_PROJECT_SUCCESS:
@@ -46,6 +48,7 @@ const projectReducer = (state = initialState, action) => {
         data: null,
         singleData: action.payload.data,
         message: "",
+        loading: false,
       };
 
     case actions.ADD_PROJECT_FAIL:
@@ -56,6 +59,7 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         message: action.message,
+        loading: false,
       };
 
     default:

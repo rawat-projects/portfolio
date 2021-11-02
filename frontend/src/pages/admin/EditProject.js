@@ -134,6 +134,9 @@ const EditProject = ({ match, history }) => {
                 <Option value="Javascript" label="Javascript">
                   <div className="demo-option-label-item">Javascript</div>
                 </Option>
+                <Option value="Wordpress" label="wordpress">
+                  <div className="demo-option-label-item">Wordpress</div>
+                </Option>
                 <Option value="React" label="React">
                   <div className="demo-option-label-item">React</div>
                 </Option>

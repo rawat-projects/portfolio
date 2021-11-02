@@ -42,7 +42,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload,
         isAuthenticated: true,
-        message: "",
+        message: action.message,
         isUserLogin: true,
       };
 
@@ -51,8 +51,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         user: action.payload,
-        isAuthenticated: true,
-        isUserLogin: action.isAuthenticated,
+        isAuthenticated: action.isAuthenticated,
+        isUserLogin: action.isUserLogin,
       };
 
     case actions.IS_LOGIN_FAIL:

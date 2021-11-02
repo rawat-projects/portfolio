@@ -59,11 +59,12 @@ const UserProjects = ({ history }) => {
   if (data && data.length > 1) {
     data.map((item, index) => {
       const { name, projectImage, link, languages, _id: id } = item;
+      console.log("languages", languages);
       return tableData.push({
         name,
         projectImage,
         link,
-        languages,
+        languages: languages.join(),
         id,
         key: id,
       });

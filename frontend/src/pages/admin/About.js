@@ -23,6 +23,7 @@ const About = () => {
       setAboutData({
         ...aboutData,
         profilePreview: oldData.profileImage,
+        profileImage: oldData.profileImage,
         name: oldData.name,
         subHeading: oldData.subHeading,
         email: oldData.email,

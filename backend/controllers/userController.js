@@ -33,9 +33,13 @@ exports.postAbout = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsyncErrors(async (req, res, next) => {
+  console.log("body", req.body);
+  console.log("file", req.file);
   const data = {
     ...req.body,
-    profileImage: process.env.BACKEND_URL + "/" + req.file.filename,
+    profileImage: req.file
+      ? process.env.BACKEND_URL + "/" + req.file.filename
+      : req.body.profileImage,
   };
   await User.findByIdAndUpdate(req.user[0]._id, data, {
     new: true,

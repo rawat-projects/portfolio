@@ -8,40 +8,42 @@ const os = require("os");
 const path = require("path");
 
 exports.login = async (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
 
-  const oldUser = await User.findOne({ username: username });
-  if (!oldUser) {
-    return res.send({
-      message: "User not found",
+    const oldUser = await User.findOne({ username: username });
+    if (!oldUser) {
+      throw new Error("User not found");
+    }
+
+    const isMatch = await bcrypt.compare(password, oldUser.password);
+
+    if (!isMatch) {
+      throw new Error("credentials did not match");
+    }
+
+    const token = await oldUser.generateAuthToken();
+    await res.cookie("jwttoken", token, {
+      expires: new Date(Date.now() + 3600000),
+      httpOnly: true,
+    });
+
+    req.session.isLoggedIn = true;
+    req.session.user = oldUser;
+    return req.session.save((err) => {
+      return res.send({
+        message: "User login successfully",
+        isAuthenticated: true,
+        data: oldUser,
+      });
+    });
+  } catch (err) {
+    res.status(400).send({
+      message: err.message,
       isAuthenticated: false,
     });
   }
-
-  const isMatch = await bcrypt.compare(password, oldUser.password);
-
-  if (!isMatch) {
-    return res.send({
-      message: "credentials not match",
-      isAuthenticated: false,
-    });
-  }
-
-  const token = await oldUser.generateAuthToken();
-  await res.cookie("jwttoken", token, {
-    expires: new Date(Date.now() + 3600000),
-    httpOnly: true,
-  });
-
-  req.session.isLoggedIn = true;
-  req.session.user = oldUser;
-  return req.session.save((err) => {
-    return res.send({
-      message: "User login successfully",
-      isAuthenticated: true,
-    });
-  });
 };
 
 exports.logout = (req, res, next) => {
@@ -51,7 +53,7 @@ exports.logout = (req, res, next) => {
   });
 };
 
-exports.islogin = catchAsyncErrors(async (req, res, next) => {
+exports.islogin = async (req, res, next) => {
   const token = req.cookies.jwttoken;
   if (!token) {
     return next(new ErrorHandler("Login first to access this resource.", 401));
@@ -66,7 +68,7 @@ exports.islogin = catchAsyncErrors(async (req, res, next) => {
     success: true,
     user: rootUser,
   });
-});
+};
 
 exports.signup = async (req, res, next) => {
   console.log("signupbody", req.body);
@@ -113,12 +115,19 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.loadUser = catchAsyncErrors(async (req, res, next) => {
+  const token = req.cookies.jwttoken;
   const data = await User.findOne({
     _id: "6143874220fe394202c4906d",
   });
 
+  if (!token) {
+    return res.send({
+      user: data,
+      isAuthenticated1: false,
+    });
+  }
   res.send({
     user: data,
-    isAuthenticated1: req.session.isLoggedIn,
+    isAuthenticated1: req.session.isLoggedIn ? req.session.isLoggedIn : false,
   });
 });

@@ -1,5 +1,5 @@
 const express = require("express");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 const userRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/project");
 const bodyParser = require("body-parser");
@@ -10,7 +10,9 @@ const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middleware/errors");
 const path = require("path");
 
-dotenv.config({ path: "./config/config.env" });
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").dotenv.config({ path: "./config/config.env" });
+}
 
 const upload = multer();
 const app = express();
@@ -20,8 +22,6 @@ const store = new MongoDBStore({
   uri: process.env.MONGODB_URL,
   collection: "sessions",
 });
-
-app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,14 +34,21 @@ app.use(
     store: store,
   })
 );
+
 app.use(userRoutes);
 app.use(projectRoutes);
 
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("frontend/build"));
-}
+app.use(express.static(path.join(__dirname, "uploads")));
 
 // Middleware to handle errors
 app.use(errorMiddleware);
+
+if (process.env.NODE_ENV === "PRODUCTION") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+  app.get("*", (req, res, next) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  });
+}
 
 module.exports = app;

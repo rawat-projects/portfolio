@@ -1,0 +1,37 @@
+.projects_page .tabs button:hover,
+.projects_page .tabs button.active{border-color:#ffcf54!important; background-color:#ffcf54; color:#222!important;}
+
+.all_projects .singleItem{
+    max-height:300px;
+    transition:0.5s all;
+    -webkit-transition:0.5s all;
+    -ms-transition:0.5s all;
+    display:inline-block;
+    max-width:100%;
+    margin:7px 7px;
+}
+
+.all_projects .singleItem.hide{
+    transform:scale(0);
+    transition:0.5s all;
+    -webkit-transition:0.5s all;
+    -ms-transition:0.5s all;
+    animation: hideProject 0.7s;
+    animation-fill-mode: forwards;
+    /* animation-delay: 0.5s; */
+    max-height:0;
+    max-width:0;
+}
+
+.all_projects figure{
+    margin-bottom:0;
+}
+
+@keyframes hideProject {
+    0%{
+        position:relative;
+    }
+    100%{
+        position:absolute;
+    }
+}

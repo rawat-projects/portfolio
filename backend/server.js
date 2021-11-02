@@ -10,7 +10,9 @@ connectDatabase();
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server started at ${PORT} port`);
+  console.log(
+    `Server started on PORT: ${PORT} in ${process.env.NODE_ENV} mode`
+  );
 });
 
 // unhandled promise rejection

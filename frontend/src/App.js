@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link, Switch, Redirect, useLocation } from "react-router-dom";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 
@@ -25,14 +25,13 @@ import EditProject from "./pages/admin/EditProject";
 import AddProject from "./pages/admin/AddProject";
 import adminStyle from "./admin.module.css";
 
-import store from "./store";
 import Loader from "./components/Loader";
 import { loadUser, isLogin } from "./actions/userActions";
 import ProtectedRoute from "./route/ProtectedRoute";
 
 function App(props) {
   const [isMenusShow, setIsMenusShow] = useState(false);
-  const { loading, message } = useSelector((state) => state.auth);
+  const { loading, isUserLogin } = useSelector((state) => state.auth);
 
   let location = useLocation();
   const dispatch = useDispatch();
@@ -54,45 +53,81 @@ function App(props) {
   };
 
   if (location.pathname.includes("admin")) {
-    return (
-      <>
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            <div className={adminStyle.admin_main}>
-              <AdminSidebar />
-              <div className={adminStyle.admin_contents}>
-                <ProtectedRoute path="/admin/contact" component={Contact} />
-                <ProtectedRoute
-                  path="/admin/about"
-                  exact
-                  component={AdminAbout}
-                />
-                <ProtectedRoute
-                  path="/admin/projects/edit/:id"
-                  component={EditProject}
-                />
-                <ProtectedRoute
-                  path="/admin/projects"
-                  exact
-                  component={UserProjects}
-                />
-                <ProtectedRoute
-                  path="/admin/projects/add"
-                  component={AddProject}
-                />
-                <ProtectedRoute path="/admin/dashboard" component={Dashboard} />
-                <ProtectedRoute
-                  path="/admin/"
-                  render={() => <Redirect to="/admin/dashboard" />}
-                />
+    if (isUserLogin) {
+      return (
+        <>
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              <div className={adminStyle.admin_main}>
+                <AdminSidebar />
+                <div className={adminStyle.admin_contents}>
+                  <Switch>
+                    <Route exact path="/admin/contact" component={Contact} />
+                    <Route path="/admin/about">
+                      <AdminAbout />
+                    </Route>
+                    <Route
+                      path="/admin/projects/edit/:id"
+                      exact
+                      component={EditProject}
+                    />
+                    <Route
+                      path="/admin/projects"
+                      exact
+                      component={UserProjects}
+                    />
+                    <Route
+                      path="/admin/projects/add"
+                      exact
+                      component={AddProject}
+                    />
+                    <Route
+                      exact
+                      path="/admin/dashboard"
+                      component={Dashboard}
+                    />
+
+                    <Route
+                      path="/admin/"
+                      exact
+                      component={() => <Redirect to="/admin/dashboard" />}
+                    />
+                    <Route path="*">
+                      <h1 className="">Page not found</h1>
+                    </Route>
+                  </Switch>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-      </>
-    );
+            </>
+          )}
+        </>
+      );
+    } else {
+      return (
+        <>
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              <div className={adminStyle.admin_main}>
+                <AdminSidebar />
+                <div className={adminStyle.admin_contents}>
+                  <Route
+                    path="*"
+                    exact
+                    component={() => {
+                      return <Redirect to="/login" />;
+                    }}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      );
+    }
   }
 
   return (

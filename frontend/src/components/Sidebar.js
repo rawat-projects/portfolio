@@ -17,12 +17,12 @@ const Sidebar = ({ menus, ismenushow }) => {
         <span></span>
       </div>
 
-      <div className={style.page_title}>
+      {/* <div className={style.page_title}>
         <h4>Home</h4>
-      </div>
+      </div> */}
 
       <div className={style.contact_info}>
-        <p className={style.mobile_no}>{user.phone}</p>
+        <p className={style.mobile_no}>+91-{user.phone}</p>
       </div>
     </div>
   );
